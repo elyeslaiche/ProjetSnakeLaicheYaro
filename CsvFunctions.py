@@ -14,6 +14,7 @@ def addRow(csv,score,name):
     csv.sort_values(csv.columns[1], ascending=False, inplace= True)
     csv.reset_index(inplace= True)
     csv.drop(columns="index", inplace=True)
+    #csv.to_csv("testCsv.csv",inplace = True)
     return csv
 
 def personalBestRead(csv,name):
