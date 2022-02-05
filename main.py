@@ -9,5 +9,5 @@ if __name__ == '__main__':
     # name = "Elyes"
     # personalBest = personalBestRead(csv,name)
 # print(f'personal best of {name} = {personalBest} ')
-    fenetre = init()
-    fenetre.mainloop();
+    fenetre = initConfigWindow()
+    fenetre.mainloop()
