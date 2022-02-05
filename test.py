@@ -9,22 +9,29 @@
 
 # On importe le module tkinter pour l'interface graphique
 from tkinter import *
+
 # pour l'aléatoire
 from random import randint
 
 ########################################################################################################################
 
 # On créer une fenêtre grâce à la fonction Tk()
+
 fenetre = Tk()
 
 # On change le titre de la fenêtre
-fenetre.title('The Snake')
+fenetre.title('The Snake Game')
+
+# on définit la vitesse du jeu
+#movement = 20
+#steps_per_sec = 10
+#speed = 1100 // steps_per_sec
 
 # On récupère les dimensions de l'écran
 hauteur = fenetre.winfo_screenheight()
 largeur = fenetre.winfo_screenwidth()
 
-# On convertie les données de la hauteur (H) et de la largeur (L) en int, puis en string,
+# On convertit les données de la hauteur (H) et de la largeur (L) en int, puis en string,
 # et on modifie les dimensions voulues
 H = str(int(hauteur / 1.1))
 L = str(int(largeur / 2))
@@ -38,12 +45,14 @@ fenetre.geometry(L + "x" + H + "+0+0")
 
 ########################################################################################################################
 
+
+
 # On définition des dimensions du plateau de jeu
 LargeurPlateau = largeur / 2
 HauteurPlateau = hauteur / 1.2
 
 # On crée un Canvas pour le plateau de jeu
-Plateau = Canvas(fenetre, width=LargeurPlateau, height=HauteurPlateau, bg="pink")
+Plateau = Canvas(fenetre, width=LargeurPlateau, height=HauteurPlateau, bg="black")
 # "side" désigne l'endroit où débute le canvas
 Plateau.pack(side="bottom")
 
@@ -52,14 +61,17 @@ Barre = Text(fenetre, width=int(largeur / 2), height=int(HauteurPlateau / 10), b
 # On place la barre
 Barre.pack(side="top")
 # On écrit le score initial dans la barre
-Barre.insert(END, "score: 0\n")
+Barre.insert(END, "Score obtenu: 0\n")
 
 # On défini le nombre de cases du plateau
-NombreDeCases = 75
+NombreDeCases = 80
 
-# On défini les dimenssions d'une case
+# les dimensions d'une case
 LargeurCase = (LargeurPlateau / NombreDeCases)
 HauteurCase = (HauteurPlateau / NombreDeCases)
+
+# On crée des boutons pour lancer le jeu et quitter la partie
+
 
 
 ########################################################################################################################
@@ -74,7 +86,7 @@ def remplir_case(x, y):
     OrigineCaseY2 = OrigineCaseY1 + HauteurCase
 
     # remplissage du rectangle
-    Plateau.create_rectangle(OrigineCaseX1, OrigineCaseY1, OrigineCaseX2, OrigineCaseY2, fill="green")
+    Plateau.create_rectangle(OrigineCaseX1, OrigineCaseY1, OrigineCaseX2, OrigineCaseY2, fill="white")
 
 
 # On renvoie une case aléatoire
@@ -105,7 +117,7 @@ def etre_dans_snake(case):
         EtreDedans = 0
 
     return EtreDedans
-
+ 
 
 # On renvoie un fruit aléatoire qui n'est pas dans le serpent
 def fruit_aleatoire():
@@ -190,7 +202,7 @@ def mise_a_jour_score():
 
     SCORE = SCORE + 1
     Barre.delete(0.0, 3.0)
-    Barre.insert(END, "score: " + str(SCORE) + "\n")
+    Barre.insert(END, "score obtenu: " + str(SCORE) + "\n")
 
 
 # met à jour le snake
@@ -257,7 +269,7 @@ def tache():
         # on efface la barre des scores
         Barre.delete(0.0, 3.0)
         # on affiche perdu
-        Barre.insert(END, "Perdu avec un score de " + str(SCORE))
+        Barre.insert(END, "Vous avez perdu avec un score de " + str(SCORE))
         # on prépare la nouvelle partie
         reinitialiser_jeu()
         # on rappelle la fonction principale
