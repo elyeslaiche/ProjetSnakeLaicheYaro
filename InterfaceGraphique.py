@@ -1,10 +1,9 @@
-import tkinter as tk
-from tkinter import ttk
 
+from tkinter import ttk
 from GameLogic import *
 
-
 def init():
+
     fenetre = tk.Tk()
     fenetre.title("Snake")
     fenetre.geometry("600x600")
@@ -13,21 +12,23 @@ def init():
     Plateau.pack(side="bottom")
 
     # On crée un Canvas pour le score
-    Barre = tk.Text(fenetre, width=500, height=100, bg="grey")
-
+    Barre = tk.Text(fenetre, width=500, height=100, bg="light blue")
     # On écrit le score initial dans la barre
     Barre.tag_configure("tag_name", justify='center')
     Barre.insert("1.0","score: 0\n")
     Barre.tag_add("tag_name", "1.0", "end")
     # On place la barre
     Barre.pack()
-    # On défini le nombre de cases du plateau
-    NombreDeCases = 75
-
-    # On défini les dimenssions d'une case
-    LargeurCase = (fenetre.winfo_width() / NombreDeCases)
-    HauteurCase = (fenetre.winfo_height() / NombreDeCases)
+    Barre.config(state=tk.DISABLED)
+    fenetre.bind("<Left>", left_key)
+    fenetre.bind("<Right>", right_key)
+    fenetre.bind("<Up>", up_key)
+    fenetre.bind("<Down>", down_key)
+    fenetre.after(0, lambda: tache(fenetre, Plateau, Barre))
+    globals.initializeGlobalVar(Plateau)
     return fenetre
+
+
 
 def initConfigWindow():
     fenetreConfig = tk.Tk()

@@ -1,5 +1,5 @@
+import InterfaceGraphique
 from CsvFunctions import *
-from InterfaceGraphique import *
 
 if __name__ == '__main__':
     #csv = readScore('testCsv.csv')
@@ -9,5 +9,5 @@ if __name__ == '__main__':
     # name = "Elyes"
     # personalBest = personalBestRead(csv,name)
 # print(f'personal best of {name} = {personalBest} ')
-    fenetre = initConfigWindow()
+    fenetre = InterfaceGraphique.initConfigWindow()
     fenetre.mainloop()
