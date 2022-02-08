@@ -11,6 +11,16 @@ NombreDeCases = 75
 def remplir_case(x, y, Plateau):
     # On défini les coordonnées (origine_caseX1; origine_caseY1) du point en haut à gauche de la case
     # et (origine_caseX2;origine_caseY2) du point en bas à droite de la case
+    if x==74:
+        x=1
+    elif x==1:
+        x=74
+
+    if y==74:
+        y=1
+    elif y==1:
+        y=74
+
     OrigineCaseX1 = x * globals.LargeurCase
     OrigineCaseY1 = y * globals.HauteurCase
     OrigineCaseX2 = OrigineCaseX1 + globals.LargeurCase
@@ -108,8 +118,7 @@ def serpent_mort(NouvelleTete):
 
     # si le serpent se mange lui-même (sauf au démarrage, c'est-à-dire: sauf quand MOUVEMENT vaut (0, 0))
     # OU si on sort du canvas
-    if (etre_dans_snake(NouvelleTete) and MOUVEMENT != (0,
-                                                        0)) or NouvelleTeteX < 0 or NouvelleTeteY < 0 or NouvelleTeteX >= globals.NombreDeCases or NouvelleTeteY >= globals.NombreDeCases:
+    if (etre_dans_snake(NouvelleTete) and MOUVEMENT != (0,0)) :
         # alors, on a perdu
         PERDU = 1
 
