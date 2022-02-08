@@ -7,12 +7,19 @@ def init():
     fenetre = tk.Tk()
     fenetre.title("Snake")
     fenetre.geometry("600x600")
-    Plateau = tk.Canvas(fenetre, width=500, height=500, bg="black")
+    fenetre.resizable(False, False)
+    # Gets both half the screen width/height and window width/height
+    positionRight = int(fenetre.winfo_screenwidth() / 2 - 300)
+    positionDown = int(fenetre.winfo_screenheight() / 2 - 300)
+
+    # Positions the window in the center of the page.
+    fenetre.geometry("+{}+{}".format(positionRight, positionDown))
+    Plateau = tk.Canvas(fenetre, width=500, height=550, bg="black")
     # "side" désigne l'endroit où débute le canvas
     Plateau.pack(side="bottom")
 
     # On crée un Canvas pour le score
-    Barre = tk.Text(fenetre, width=500, height=100, bg="light blue")
+    Barre = tk.Text(fenetre, width=500, height=50, bg="light blue")
     # On écrit le score initial dans la barre
     Barre.tag_configure("tag_name", justify='center')
     Barre.insert("1.0","score: 0\n")
@@ -35,6 +42,13 @@ def initConfigWindow():
     fenetreConfig.geometry("500x500")
     fenetreConfig.config(bg='black')
     fenetreConfig.title("Snake config")
+    fenetreConfig.resizable(False, False)
+    # Gets both half the screen width/height and window width/height
+    positionRight = int(fenetreConfig.winfo_screenwidth() / 2 - 250)
+    positionDown = int(fenetreConfig.winfo_screenheight() / 2 - 250)
+
+    # Positions the window in the center of the page.
+    fenetreConfig.geometry("+{}+{}".format(positionRight, positionDown))
     name = tk.Label(fenetreConfig, text="Player name", fg='white', bg='black')
     nameEntered = tk.Text(fenetreConfig, height=1, width=25, bg='white')
     name.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
