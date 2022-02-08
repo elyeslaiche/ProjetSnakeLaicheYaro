@@ -15,8 +15,11 @@ def init():
     # Positions the window in the center of the page.
     fenetre.geometry("+{}+{}".format(positionRight, positionDown))
     Plateau = tk.Canvas(fenetre, width=700, height=650, bg="black")
-    # "side" désigne l'endroit où débute le canvas
+    #side désigne l'endroit où débute le canvas
     Plateau.pack(side="bottom",fill=tk.NONE)
+    
+    button = Button(fenetre, text = 'Recommencer la partie ', command =restart_program,fg='black', bg='#ffffff', activebackground='red', padx=15)
+    button.pack(side = BOTTOM) 
 
     # On crée un Canvas pour le score
     Barre = tk.Text(fenetre, width=500, height=50, bg="light blue")
@@ -35,7 +38,9 @@ def init():
     globals.initializeGlobalVar(Plateau)
     return fenetre
 
-
+def restart_program():
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
 
 def initConfigWindow():
     fenetreConfig = tk.Tk()
