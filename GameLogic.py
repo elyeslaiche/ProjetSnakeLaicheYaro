@@ -117,7 +117,7 @@ def serpent_mort(NouvelleTete):
 
 ############################################################################################################################
 
-def mise_a_jour_snake():
+def mise_a_jour_snake(Barre):
     global SNAKE, FRUIT
 
     # on récupère les coordonées de la tête actuelle
@@ -136,11 +136,24 @@ def mise_a_jour_snake():
         # on génère un nouveau fruit
         FRUIT = fruit_aleatoire()
         # on met à jour le score
-        #mise_a_jour_score()
+        mise_a_jour_score(Barre)
     # sinon
     else:
         # on enlève le dernier élément du serpent (c'est-à-dire: on ne grandit pas)
         SNAKE.pop()
+
+# met à jour le score
+def mise_a_jour_score(Barre):
+    global SCORE
+
+    SCORE = SCORE + 1
+    Barre.config(state=tk.NORMAL)
+    Barre.delete(0.0, 3.0)
+    Barre.insert('1.0', "score obtenu: " + str(SCORE) + "\n")
+    Barre.tag_add("tag_name", "1.0", "end")
+    Barre.config(state=tk.DISABLED)
+
+
 
 def tache(fenetre, Plateau, Barre):
     # on met à jour l'affichage et les événements du clavier
@@ -148,7 +161,7 @@ def tache(fenetre, Plateau, Barre):
     fenetre.update
     fenetre.update_idletasks()
     # on met à jour le snake
-    mise_a_jour_snake()
+    mise_a_jour_snake(Barre)
     # on supprime tous les éléments du plateau
     Plateau.delete("all")
     # on redessine le fruit
@@ -163,6 +176,7 @@ def tache(fenetre, Plateau, Barre):
         Barre.delete(0.0, 3.0)
         # on affiche perdu
         Barre.insert('1.0', "Vous avez perdu avec un score de " + str(SCORE))
+        Barre.tag_add("tag_name", "1.0", "end")
         Barre.config(state=tk.DISABLED)
         # on prépare la nouvelle partie
         #reinitialiser_jeu()
