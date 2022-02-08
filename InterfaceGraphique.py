@@ -1,4 +1,5 @@
-
+import os
+import sys
 from tkinter import ttk
 from GameLogic import *
 
@@ -18,8 +19,8 @@ def init():
     #side désigne l'endroit où débute le canvas
     Plateau.pack(side="bottom",fill=tk.NONE)
     
-    button = Button(fenetre, text = 'Recommencer la partie ', command =restart_program,fg='black', bg='#ffffff', activebackground='red', padx=15)
-    button.pack(side = BOTTOM) 
+    button = tk.Button(fenetre, text = 'Recommencer la partie ', command =restart_program,fg='black', bg='#ffffff', activebackground='red', padx=15)
+    button.pack(side = tk.BOTTOM)
 
     # On crée un Canvas pour le score
     Barre = tk.Text(fenetre, width=500, height=50, bg="light blue")

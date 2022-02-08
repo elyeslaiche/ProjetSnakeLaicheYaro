@@ -11,15 +11,6 @@ NombreDeCases = 75
 def remplir_case(x, y, Plateau):
     # On défini les coordonnées (origine_caseX1; origine_caseY1) du point en haut à gauche de la case
     # et (origine_caseX2;origine_caseY2) du point en bas à droite de la case
-    if x==74:
-        x=1
-    elif x==1:
-        x=74
-
-    if y==74:
-        y=1
-    elif y==1:
-        y=74
 
     OrigineCaseX1 = x * globals.LargeurCase
     OrigineCaseY1 = y * globals.HauteurCase
@@ -134,12 +125,24 @@ def mise_a_jour_snake(Barre):
     MouvementX, MouvementY = MOUVEMENT
     # on calcule les coordonées de la nouvelle tête
     NouvelleTete = (AncienneTeteX + MouvementX, AncienneTeteY + MouvementY)
+
+    if NouvelleTete[0]==75:
+        NouvelleTete = (0, NouvelleTete[1])
+    elif NouvelleTete[0]==0:
+        NouvelleTete = (75, NouvelleTete[1])
+
+    if NouvelleTete[1]==75:
+        NouvelleTete = (NouvelleTete[0],0)
+    elif NouvelleTete[1]==0:
+        NouvelleTete = (NouvelleTete[0], 75)
+
     # on vérifie si on a perdu
     serpent_mort(NouvelleTete)
     # on ajoute la nouvelle tête
     SNAKE.insert(0, NouvelleTete)
 
     # si on mange un fruit
+
     if NouvelleTete == FRUIT:
         # on génère un nouveau fruit
         FRUIT = fruit_aleatoire()
