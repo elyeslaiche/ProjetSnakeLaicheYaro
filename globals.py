@@ -6,5 +6,5 @@ def initializeGlobalVar(Plateau):
     global HauteurCase
     NombreDeCases = 75
     # On défini le nombre de cases du plateau
-    LargeurCase = (Plateau.winfo_width() / NombreDeCases)
-    HauteurCase = (Plateau.winfo_height() / NombreDeCases)
+    LargeurCase = (700 / NombreDeCases)
+    HauteurCase = (650 / NombreDeCases)

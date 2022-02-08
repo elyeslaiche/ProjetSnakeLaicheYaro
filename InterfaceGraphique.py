@@ -6,17 +6,17 @@ def init():
 
     fenetre = tk.Tk()
     fenetre.title("Snake")
-    fenetre.geometry("600x600")
+    fenetre.geometry("700x700")
     fenetre.resizable(False, False)
     # Gets both half the screen width/height and window width/height
-    positionRight = int(fenetre.winfo_screenwidth() / 2 - 300)
-    positionDown = int(fenetre.winfo_screenheight() / 2 - 300)
+    positionRight = int(fenetre.winfo_screenwidth() / 2 - 350)
+    positionDown = int(fenetre.winfo_screenheight() / 2 - 350)
 
     # Positions the window in the center of the page.
     fenetre.geometry("+{}+{}".format(positionRight, positionDown))
-    Plateau = tk.Canvas(fenetre, width=500, height=550, bg="black")
+    Plateau = tk.Canvas(fenetre, width=700, height=650, bg="black")
     # "side" désigne l'endroit où débute le canvas
-    Plateau.pack(side="bottom")
+    Plateau.pack(side="bottom",fill=tk.NONE)
 
     # On crée un Canvas pour le score
     Barre = tk.Text(fenetre, width=500, height=50, bg="light blue")

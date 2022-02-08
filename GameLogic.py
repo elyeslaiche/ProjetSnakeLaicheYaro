@@ -61,7 +61,6 @@ def fruit_aleatoire():
 # On dessine le fruit, idem que pour colorier une case, mais on utilise create_oval à la place
 def dessine_fruit(Plateau):
     global FRUIT
-
     x, y = FRUIT
 
     OrigineCaseX1 = x * globals.LargeurCase
@@ -153,6 +152,21 @@ def mise_a_jour_score(Barre):
     Barre.tag_add("tag_name", "1.0", "end")
     Barre.config(state=tk.DISABLED)
 
+# réinitialise les variables pour une nouvelle partie
+def reinitialiser_jeu():
+    global SNAKE, FRUIT, MOUVEMENT, SCORE, PERDU
+
+    # serpent initial
+    SNAKE = [case_aleatoire()]
+    # fruit initial
+    FRUIT = fruit_aleatoire()
+    # mouvement initial
+    MOUVEMENT = (0, 0)
+    # score initial
+    SCORE = 0
+    # variable perdu initiale (sera mise à 1 si le joueur perd)
+    PERDU = 0
+
 
 
 def tache(fenetre, Plateau, Barre):
@@ -179,7 +193,7 @@ def tache(fenetre, Plateau, Barre):
         Barre.tag_add("tag_name", "1.0", "end")
         Barre.config(state=tk.DISABLED)
         # on prépare la nouvelle partie
-        #reinitialiser_jeu()
+        reinitialiser_jeu()
         # on rappelle la fonction principale
         fenetre.after(70, lambda: tache(fenetre, Plateau, Barre))
     # sinon
