@@ -1,10 +1,16 @@
 import tkinter as tk
+
+import InterfaceGraphique
 import globals
 # pour l'aléatoire
 from random import randint
 
+import CsvFunctions
+
 global NombreDeCases
+global NAME
 NombreDeCases = 75
+
 
 
 # Fonction qui détermine la taille des cases du plateau et qui les colore en vert pour symboliser le serpent
@@ -181,8 +187,11 @@ def reinitialiser_jeu():
 
 
 
+
 def tache(fenetre, Plateau, Barre):
     # on met à jour l'affichage et les événements du clavier
+    NAME = InterfaceGraphique.NAME
+    NAME = str(NAME).rstrip('\n')
     globals.initializeGlobalVar(fenetre)
     fenetre.update
     fenetre.update_idletasks()
@@ -205,6 +214,8 @@ def tache(fenetre, Plateau, Barre):
         Barre.tag_add("tag_name", "1.0", "end")
         Barre.config(state=tk.DISABLED)
         # on prépare la nouvelle partie
+        print(SCORE)
+        CsvFunctions.addRow('testCsv.csv',int(SCORE),str(NAME))
         reinitialiser_jeu()
         # on rappelle la fonction principale
         fenetre.after(70, lambda: tache(fenetre, Plateau, Barre))

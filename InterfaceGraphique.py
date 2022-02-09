@@ -2,6 +2,7 @@ import os
 import sys
 from tkinter import ttk
 from GameLogic import *
+import tkinter as tk
 
 def init():
 
@@ -61,7 +62,7 @@ def initConfigWindow():
     nameEntered.place(relx=0.5, rely=0.6, anchor=tk.CENTER)
 
     buttonStart = tk.Button(fenetreConfig, text='start', fg='green', bg='darkgrey', activebackground='green',
-    activeforeground='white', command=lambda: startGame(fenetreConfig))
+    activeforeground='white', command=lambda: startGame(fenetreConfig,nameEntered))
     buttonQuit = tk.Button(fenetreConfig, text='quit', fg='red', bg='darkgrey', activebackground='red',
     activeforeground='white', command=fenetreConfig.destroy)
     buttonStart.place(relx=0.5, rely=0.85, anchor=tk.CENTER)
@@ -102,7 +103,6 @@ def initConfigWindow():
                    values=('5', 'CrissCross'))
     my_game.insert(parent='', index='end', iid=5, text='',
                    values=('6', 'ZaqueriBlack', '106'))
-
     game_frame.pack()
     my_game.pack()
 
@@ -113,7 +113,9 @@ def LastWindow():
     return 0
 
 
-def startGame(fenetre):
+def startGame(fenetre,Textbox):
+    global NAME
+    NAME = Textbox.get("1.0", tk.END)
     fenetre.destroy()
     fenetreGame = init()
     fenetreGame.mainloop()
