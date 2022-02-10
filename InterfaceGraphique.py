@@ -85,41 +85,34 @@ def initConfigWindow():
     buttonStart.place(relx=0.5, rely=0.85, anchor=tk.CENTER)
     buttonQuit.place(relx=0.5, rely=0.95, anchor=tk.CENTER)
 
+    # Utilisation de ttk pour pouvoir insérer le tableau des scores dans la fenetre
     style = ttk.Style(fenetreConfig)
-    # set ttk theme to "clam" which support the fieldbackground option
     style.theme_use("clam")
     style.configure("Treeview", background="black",
                     fieldbackground="black", foreground="white")
 
-    game_frame = tk.Frame(fenetreConfig)
-    my_game = ttk.Treeview(game_frame)
+    configFrame = tk.Frame(fenetreConfig)
+    Table = ttk.Treeview(configFrame)
 
-    my_game['columns'] = ('player_name', 'player_Rank', 'player_states')
+    # Attribution des colonnes
+    Table['columns'] = ('player_name', 'player_Rank', 'player_states')
+    Table.column("#0", width=0, stretch=tk.NO)
+    Table.column("player_name", anchor=tk.CENTER, width=100)
+    Table.column("player_Rank", anchor=tk.CENTER, width=100)
+    Table.column("player_states", anchor=tk.CENTER, width=100)
 
-    my_game.column("#0", width=0, stretch=tk.NO)
-    my_game.column("player_name", anchor=tk.CENTER, width=100)
-    my_game.column("player_Rank", anchor=tk.CENTER, width=100)
-    my_game.column("player_states", anchor=tk.CENTER, width=100)
+    # Configuration des nom de colonnes
+    Table.heading("#0", text="", anchor=tk.CENTER)
+    Table.heading("player_name", text="Name", anchor=tk.CENTER)
+    Table.heading("player_Rank", text="Rank", anchor=tk.CENTER)
+    Table.heading("player_states", text="States", anchor=tk.CENTER)
 
-    my_game.heading("#0", text="", anchor=tk.CENTER)
-    my_game.heading("player_name", text="Name", anchor=tk.CENTER)
-    my_game.heading("player_Rank", text="Rank", anchor=tk.CENTER)
-    my_game.heading("player_states", text="States", anchor=tk.CENTER)
-
-    my_game.insert(parent='', index='end', iid=0, text='',
+    Table.insert(parent='', index='end', iid=0, text='',
                    values=('1', 'Ninja', '101', 'Oklahoma', 'Moore'))
-    my_game.insert(parent='', index='end', iid=1, text='',
-                   values=('2', 'Ranger', '102'))
-    my_game.insert(parent='', index='end', iid=2, text='',
-                   values=('3', 'Deamon', '103'))
-    my_game.insert(parent='', index='end', iid=3, text='',
-                   values=('4', 'Dragon', '104'))
-    my_game.insert(parent='', index='end', iid=4, text='',
-                   values=('5', 'CrissCross'))
-    my_game.insert(parent='', index='end', iid=5, text='',
-                   values=('6', 'ZaqueriBlack', '106'))
-    game_frame.pack()
-    my_game.pack()
+
+    # Affichage du tableau et du Frame qui contient le tableau
+    configFrame.pack()
+    Table.pack()
 
     return fenetreConfig
 
@@ -129,12 +122,15 @@ def LastWindow():
 
 
 def startGame(fenetre, Textbox):
+    # Définition d'une variable globale qui contiendra le nom du joueur
     global NAME
+
+    # Récupération du nom
     NAME = Textbox.get("1.0", tk.END)
+
+    # On ferme la fenêtre de configuration
     fenetre.destroy()
+
+    # On affiche la fenetre du jeu grace à la fonction init() déclarée plus haut
     fenetreGame = init()
     fenetreGame.mainloop()
-
-# S'inspirer de test.py pour faire le serpent, comment il se deplace, comment les fruits sont générés (Elyes)
-# fenetre après defaite pour afficher le top 3 des meilleurs scores, et ton personal best (Elyes)
-# modifier l'interface graphique(Pascal), faire des skins de serpent(Pascal), nom du joueur(Elyes), pouvoir enregistrer le score a la fin(Elyes), pouvoir enregistrer la partie en cours(Elyes), mode de difficulté avec la vitesse (Pascal),
