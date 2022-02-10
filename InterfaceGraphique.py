@@ -1,48 +1,50 @@
-import os
-import sys
+
+#Interface graphique
 from tkinter import ttk
+#Import pour utilisation des méthodes de Gamelogic.py
 from GameLogic import *
-import tkinter as tk
+
 
 def init():
-
+    #declaration de la fenetre du jeu
     fenetre = tk.Tk()
     fenetre.title("Snake")
     fenetre.geometry("700x700")
     fenetre.resizable(False, False)
-    # Gets both half the screen width/height and window width/height
-    positionRight = int(fenetre.winfo_screenwidth() / 2 - 350)
-    positionDown = int(fenetre.winfo_screenheight() / 2 - 350)
 
-    # Positions the window in the center of the page.
+    # Pour obtenir les positions centrales de l'ecran
+    positionRight = int(fenetre.winfo_screenwidth() / 2 - 400)
+    positionDown = int(fenetre.winfo_screenheight() / 2 - 400)
+
+    # Centre la fenetre
     fenetre.geometry("+{}+{}".format(positionRight, positionDown))
-    Plateau = tk.Canvas(fenetre, width=700, height=650, bg="black")
-    #side désigne l'endroit où débute le canvas
-    Plateau.pack(side="bottom",fill=tk.NONE)
+
+    #déclaration du plateau de jeu
+    Canvas = tk.Canvas(fenetre, width=700, height=650, bg="black")
+    Canvas.pack(side="bottom",fill=tk.NONE)
     
     button = tk.Button(fenetre, text = 'Recommencer la partie ', command =restart_program,fg='black', bg='#ffffff', activebackground='red', padx=15)
     button.pack(side = tk.BOTTOM)
 
     # On crée un Canvas pour le score
-    Barre = tk.Text(fenetre, width=500, height=50, bg="light blue")
+    Bar = tk.Text(fenetre, width=500, height=50, bg="light blue")
     # On écrit le score initial dans la barre
-    Barre.tag_configure("tag_name", justify='center')
-    Barre.insert("1.0","score: 0\n")
-    Barre.tag_add("tag_name", "1.0", "end")
+    Bar.tag_configure("tag_name", justify='center')
+    Bar.insert("1.0","score: 0\n")
+    Bar.tag_add("tag_name", "1.0", "end")
     # On place la barre
-    Barre.pack()
-    Barre.config(state=tk.DISABLED)
+    Bar.pack()
+    Bar.config(state=tk.DISABLED)
     fenetre.bind("<Left>", left_key)
     fenetre.bind("<Right>", right_key)
     fenetre.bind("<Up>", up_key)
     fenetre.bind("<Down>", down_key)
-    fenetre.after(0, lambda: tache(fenetre, Plateau, Barre))
-    globals.initializeGlobalVar(Plateau)
+    fenetre.after(0, lambda: tache(fenetre, Canvas, Bar))
+    globals.initializeGlobalVar(Canvas)
     return fenetre
 
 def restart_program():
-    python = sys.executable
-    os.execl(python, python, * sys.argv)
+    reinitialiser_jeu()
 
 def initConfigWindow():
     fenetreConfig = tk.Tk()

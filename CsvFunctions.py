@@ -10,7 +10,11 @@ def readScore(csvPath):
 def addRow(csvPath,score,name):
 
     csvoriginal = pd.read_csv(csvPath, sep=",")
-    df = pd.DataFrame({str(csvoriginal.columns[0]):[name],str(csvoriginal.columns[1]):[score]})
+    if(name == ""):
+        df = pd.DataFrame({str(csvoriginal.columns[0]): ["Unamed player"], str(csvoriginal.columns[1]): [score]})
+    else:
+        df = pd.DataFrame({str(csvoriginal.columns[0]):[name],str(csvoriginal.columns[1]):[score]})
+
     csv = pd.concat([csvoriginal, df])
     csv.sort_values(csv.columns[1], ascending=False, inplace=True)
 
