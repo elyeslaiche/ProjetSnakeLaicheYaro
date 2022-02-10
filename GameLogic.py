@@ -1,6 +1,8 @@
 # Import de tkinter pour utiliser les constantes de tkinter
 import tkinter as tk
 # Import des différents fichiers pour accès aux méthodes
+import time
+
 import CsvFunctions
 import InterfaceGraphique
 # Initialisation des variables globales
@@ -90,32 +92,37 @@ def left_key(event):
     global LASTMOVE
     global MOUVEMENT
     if (LASTMOVE != 'right_key' or None):
-        LASTMOVE = 'left_key'
         MOUVEMENT = (-1, 0)
+        LASTMOVE = 'left_key'
+        time.sleep(100)
 
 
 def right_key(event):
     global LASTMOVE
     global MOUVEMENT
     if (LASTMOVE != 'left_key' or None):
-        LASTMOVE = 'right_key'
         MOUVEMENT = (1, 0)
+        LASTMOVE = 'right_key'
+        time.sleep(100)
 
 
 def up_key(event):
     global LASTMOVE
     global MOUVEMENT
     if (LASTMOVE != 'down_key' or None):
-        LASTMOVE = 'up_key'
         MOUVEMENT = (0, -1)
+        LASTMOVE = 'up_key'
+        time.sleep(100)
 
 
 def down_key(event):
     global LASTMOVE
     global MOUVEMENT
     if (LASTMOVE != 'up_key' or None):
-        LASTMOVE = 'down_key'
         MOUVEMENT = (0, 1)
+        LASTMOVE = 'down_key'
+        time.sleep(100)
+
 
 
 ########################################################################################################################
