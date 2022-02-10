@@ -1,0 +1,65 @@
+#Installation de python3
+
+Installation de python3 
+
+----sur windows
+
+-Se rendre à la page de téléchargement https://www.python.org/downloads/windows/
+-Sous l'option "Python Releases for Windows” choisir la dernière version de python : python3
+-Se rendre en bas de page pour sélectionner l'option convenable entre ces 2 : 
+Windows x86-64 executable installer for 64-bit ou Windows x86 executable installer for 32-bit
+
+Après le téléchargement du fichier, il faut l'exécuter et le chemin par défaut est : AppData/Directory
+
+--sur macOS
+
+sur le terminal lancer la commande suivante :
+$ brew install python3
+
+--sur ubuntu lancer les commandes suivantes :
+$ sudo apt-get update
+$ sudo apt-get install python3.8 python3-pip
+
+#Vérification de la version de python utilisée
+$ python --version
+
+#Lister tous les modules nécessaires pour pouvoir exécuter le commande
+ $ pip3 freeze
+
+#Installation de pandas
+--windows
+$ pip install pandas
+
+--ubuntu
+$ pip3 install pandas
+
+--MacOS
+pip3 install
+
+#Autre option pour ne pas installer tous les modules nécessaires
+# Utilisation d'un environnement virtuel
+#Démarche à suivre 
+
+Ouvrir un terminal 
+
+Mise en place du paquet de gestion pip
+$ pip -h
+
+Installation du paquet virtual env
+$ pip install virtualenv
+
+Création de l'environnement virtuel
+$ virtualenv mypython
+
+Activation de l'environnement virtuel
+MacOS/Linux
+$ source mypython/bin/activate
+Windows
+$ mypthon\Scripts\activate
+
+Pour désactiver l'environnement virtuel
+$ deactivate
+
+
+
+
