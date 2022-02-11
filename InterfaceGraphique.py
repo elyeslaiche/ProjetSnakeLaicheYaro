@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import ttk
 import GameLogic
 from CsvFunctions import readScore
-from GameLogic import reinitialiser_jeu, tache, left_key, right_key, up_key, down_key, case_aleatoire, fruit_aleatoire
+from GameLogic import reinitialiser_jeu, tache, left_key, right_key, up_key, down_key, randomTuple, randomFruitPos
 
 
 def init():

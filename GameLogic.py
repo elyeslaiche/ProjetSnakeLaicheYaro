@@ -3,196 +3,193 @@ import collections
 import tkinter as tk
 import InterfaceGraphique
 import CsvFunctions
-# Initialisation des variables globales
-# pour l'aléatoire
-from random import randint
 
+# pour l'aleatoire
+from random import randint
 
 LASTMOVE = None
 
-# Fonction qui détermine la taille des cases du plateau et qui les colore en vert pour symboliser le serpent
+
+# Methode pour obtenir une case aleatoire utilise pour dessiner un fruit
+def randomTuple():
+    # on met à jour l'affichage et les événements du clavier
+    X = randint(0, int(BOXCOUNT) - 1)
+    Y = randint(0, int(BOXCOUNT) - 1)
+
+    return X, Y
+
+
+# Fonction qui détermine la taille des cases du plateau et qui les colore en blanc pour symboliser le serpent
 def CaseDraw(x, y, Canvas):
-    # On défini les coordonnées (origine_caseX1; origine_caseY1) du point en haut à gauche de la case
-    # et (origine_caseX2;origine_caseY2) du point en bas à droite de la case
-    X1 = x * LargeurCase
-    Y1 = y * HauteurCase
-    X2 = X1 + LargeurCase
-    Y2 = Y1 + HauteurCase
+    # On défini les coordonnées (X1, Y1) du point en haut à gauche de la case
+    # et (X2, Y2) du point en bas à droite de la case
+    X1 = x * boxWidth
+    Y1 = y * boxHeight
+    X2 = X1 + boxWidth
+    Y2 = Y1 + boxHeight
 
     # remplissage du rectangle
     Canvas.create_rectangle(X1, Y1, X2, Y2, fill="white")
 
 
-def case_aleatoire():
-    # on met à jour l'affichage et les événements du clavier
-    AleatoireX = randint(0, int(CASENUMBER) - 1)
-    AleatoireY = randint(0, int(CASENUMBER) - 1)
-
-    return AleatoireX, AleatoireY
-
-
-# affiche le serpent, l'argument étant la liste snake
-def dessine_serpent(snake, Plateau):
+# affiche le serpent, l'argument étant la liste snake et la plateau de jeu
+def drawSnake(snake, canvas):
     # tant qu'il y a des cases dans snake
     for case in snake:
         # on récupère les coordonées de la case
         x, y = case
         # on colorie la case
-        CaseDraw(x, y, Plateau)
-
-
-# On retourne le chiffre 1 si la case est dans le snake, 0 sinon
-def etre_dans_snake(case):
-    if case in SNAKE:
-        EtreDedans = 1
-    else:
-        EtreDedans = 0
-
-    return EtreDedans
-
-
-# On renvoie un fruit aléatoire qui n'est pas dans le serpent
-def fruit_aleatoire():
-    # choix d'un fruit aléatoire
-    FruitAleatoire = case_aleatoire()
-
-    # tant que le fruit aléatoire est dans le serpent
-    while (etre_dans_snake(FruitAleatoire)):
-        # on prend un nouveau fruit aléatoire
-        FruitAleatoire = case_aleatoire
-
-    return FruitAleatoire
+        CaseDraw(x, y, canvas)
 
 
 # On dessine le fruit, idem que pour colorier une case, mais on utilise create_oval à la place
-def dessine_fruit(Plateau):
+def drawFruit(Canvas):
     global FRUIT
     if not isinstance(FRUIT, collections.abc.Sequence):
-        FRUIT= case_aleatoire()
+        FRUIT = randomTuple()
     x, y = FRUIT
 
-    OrigineCaseX1 = x * LargeurCase
-    OrigineCaseY1 = y * HauteurCase
-    OrigineCaseX2 = OrigineCaseX1 + LargeurCase
-    OrigineCaseY2 = OrigineCaseY1 + HauteurCase
+    X1 = x * boxWidth
+    Y1 = y * boxHeight
+    X2 = X1 + boxWidth
+    Y2 = Y1 + boxHeight
 
-    # On remplie l'ovale en rouge pour le fruit
+    # On rempli la figure en rouge pour le fruit
+    Canvas.create_oval(X1, Y1, X2, Y2, fill="red")
 
-    Plateau.create_oval(OrigineCaseX1, OrigineCaseY1, OrigineCaseX2, OrigineCaseY2, fill="red")
+
+# On retourne le true si la case est dans le snake, 0 sinon
+def IsInSnake(case):
+    if case in SNAKE:
+        return True
+    else:
+        return False
 
 
-# met à jour la variable PERDU indiquant si on a perdu
-def serpent_mort(NouvelleTete):
-    global PERDU
+# On renvoie un fruit aléatoire qui n'est pas dans le serpent
+def randomFruitPos():
+    # choix d'un fruit aléatoire
+    randFruit = randomTuple()
+
+    # tant que le fruit aléatoire est dans le serpent
+    while (IsInSnake(randFruit)):
+        # on prend un nouveau fruit aléatoire
+        randFruit = randomTuple
+
+    return randFruit
+
+
+# met à jour la variable DEFEAT indiquant si on a perdu
+def deadSnake(Head):
+    global DEFEAT
 
     # si le serpent se mange lui-même (sauf au démarrage, c'est-à-dire: sauf quand MOUVEMENT vaut (0, 0))
-    # OU si on sort du canvas
-    if etre_dans_snake(NouvelleTete) and MOUVEMENT != (0, 0):
+    if IsInSnake(Head) and MOVE != (0, 0):
         # alors, on a perdu
-        PERDU = 1
+        DEFEAT = 1
 
 
-############################################################################################################################
+# ----------------------------------------------------------------------------------------------------------------
 
-def mise_a_jour_snake(Barre):
+def updateSnake(Bar):
     global SNAKE, FRUIT
 
     # on récupère les coordonées de la tête actuelle
-    (AncienneTeteX, AncienneTeteY) = SNAKE[0]
+    (lastHeadX, lastHeadY) = SNAKE[0]
     # on récupère les valeurs du mouvement
-    MouvementX, MouvementY = MOUVEMENT
+    moveX, moveY = MOVE
     # on calcule les coordonées de la nouvelle tête
-    NouvelleTete = (AncienneTeteX + MouvementX, AncienneTeteY + MouvementY)
+    newHead = (lastHeadX + moveX, lastHeadY + moveY)
 
     # si on mange un fruit
 
-    if NouvelleTete == FRUIT:
+    if newHead == FRUIT:
         # on génère un nouveau fruit
-        FRUIT = fruit_aleatoire()
+        FRUIT = randomFruitPos()
         # on met à jour le score
-        mise_a_jour_score(Barre)
+        updateScore(Bar)
     # sinon
     else:
         # on enlève le dernier élément du serpent (c'est-à-dire: on ne grandit pas)
         SNAKE.pop()
-        if NouvelleTete[0] >= int(CASENUMBER) and LASTMOVE == 'right_key':
-            NouvelleTete = (0, NouvelleTete[1])
-        elif NouvelleTete[0] < 0 and LASTMOVE == 'left_key':
-            NouvelleTete = (int(CASENUMBER), NouvelleTete[1])
+        if newHead[0] >= int(BOXCOUNT) and LASTMOVE == 'right_key':
+            newHead = (0, newHead[1])
+        elif newHead[0] < 0 and LASTMOVE == 'left_key':
+            newHead = (int(BOXCOUNT), newHead[1])
 
-        if NouvelleTete[1] >= int(CASENUMBER) and LASTMOVE == 'down_key':
-            NouvelleTete = (NouvelleTete[0], 0)
-        elif NouvelleTete[1] < 0 and LASTMOVE == 'up_key':
-            NouvelleTete = (NouvelleTete[0], int(CASENUMBER))
+        if newHead[1] >= int(BOXCOUNT) and LASTMOVE == 'down_key':
+            newHead = (newHead[0], 0)
+        elif newHead[1] < 0 and LASTMOVE == 'up_key':
+            newHead = (newHead[0], int(BOXCOUNT))
 
     # on vérifie si on a perdu
-    serpent_mort(NouvelleTete)
+    deadSnake(newHead)
     # on ajoute la nouvelle tête
-    SNAKE.insert(0, NouvelleTete)
+    SNAKE.insert(0, newHead)
 
 
 # met à jour le score
-def mise_a_jour_score(Barre):
+def updateScore(Barre):
     global SCORE
-    global SCORE
-    SCORE = SCORE + 1
+    SCORE += 1
     Barre.config(state=tk.NORMAL)
     Barre.delete(0.0, 3.0)
     Barre.insert('1.0', "score obtenu: " + str(SCORE) + "\n")
     Barre.tag_add("tag_name", "1.0", "end")
     Barre.config(state=tk.DISABLED)
 
-########################################################################################################################
+
+# ----------------------------------------------------------------------------------------------------------------
 
 # Ces quatres fonctions permettent le déplacement dans quatres directions du serpent
 # elles mettent à jour les coordonées du mouvement
 def left_key(event):
     global LASTMOVE
-    global MOUVEMENT
+    global MOVE
     if LASTMOVE != 'right_key' or None:
-        MOUVEMENT = (-1, 0)
+        MOVE = (-1, 0)
         LASTMOVE = 'left_key'
 
 
 def right_key(event):
     global LASTMOVE
-    global MOUVEMENT
+    global MOVE
     if LASTMOVE != 'left_key' or None:
-        MOUVEMENT = (1, 0)
+        MOVE = (1, 0)
         LASTMOVE = 'right_key'
 
 
 def up_key(event):
     global LASTMOVE
-    global MOUVEMENT
+    global MOVE
     if LASTMOVE != 'down_key' or None:
-        MOUVEMENT = (0, -1)
+        MOVE = (0, -1)
         LASTMOVE = 'up_key'
 
 
 def down_key(event):
     global LASTMOVE
-    global MOUVEMENT
+    global MOVE
     if LASTMOVE != 'up_key' or None:
-        MOUVEMENT = (0, 1)
+        MOVE = (0, 1)
         LASTMOVE = 'down_key'
 
 
-########################################################################################################################
+# ----------------------------------------------------------------------------------------------------------------
 # réinitialise les variables pour une nouvelle partie
 def reinitialiser_jeu():
-    global SNAKE, FRUIT, MOUVEMENT, SCORE, PERDU
+    global SNAKE, FRUIT, MOVE, SCORE, DEFEAT
 
     # serpent initial
-    SNAKE = [case_aleatoire()]
+    SNAKE = [randomTuple()]
     # fruit initial
-    FRUIT = fruit_aleatoire()
+    FRUIT = randomFruitPos()
     # mouvement initial
-    MOUVEMENT = (0, 0)
+    MOVE = (0, 0)
     # score initial
     SCORE = 0
     # variable perdu initiale (sera mise à 1 si le joueur perd)
-    PERDU = 0
+    DEFEAT = 0
 
 
 def tache(fenetre, Plateau, Barre, CASENUMBER, NAME):
@@ -202,16 +199,16 @@ def tache(fenetre, Plateau, Barre, CASENUMBER, NAME):
     fenetre.update
     fenetre.update_idletasks()
     # on met à jour le snake
-    mise_a_jour_snake(Barre)
+    updateSnake(Barre)
     # on supprime tous les éléments du plateau
     Plateau.delete("all")
     # on redessine le fruit
-    dessine_fruit(Plateau)
+    drawFruit(Plateau)
     # on redessine le serpent
-    dessine_serpent(SNAKE, Plateau)
+    drawSnake(SNAKE, Plateau)
 
     # si on a perdu
-    if PERDU:
+    if DEFEAT:
         CsvFunctions.addRow(int(SCORE), str(NAME))
         InterfaceGraphique.LastWindow(fenetre)
     # sinon
@@ -220,30 +217,30 @@ def tache(fenetre, Plateau, Barre, CASENUMBER, NAME):
         fenetre.after(70, lambda: tache(fenetre, Plateau, Barre, CASENUMBER, NAME))
 
 
-
-#######################################################################################################################################
-def InitGame(NombreCase):
-    global CASENUMBER
-    CASENUMBER = NombreCase
-    if not CASENUMBER.rstrip('\n').isdigit() or (CASENUMBER.rstrip('\n') == "" or int(CASENUMBER.rstrip('\n')) < 25 or int(CASENUMBER.rstrip('\n'))>200):
-        CASENUMBER = 50
+# ----------------------------------------------------------------------------------------------------------------
+def InitGame(boxCount):
+    global BOXCOUNT
+    BOXCOUNT = boxCount
+    if not BOXCOUNT.rstrip('\n').isdigit() or (
+            BOXCOUNT.rstrip('\n') == "" or int(BOXCOUNT.rstrip('\n')) < 25 or int(BOXCOUNT.rstrip('\n')) > 200):
+        BOXCOUNT = 50
     # le snake initial: une liste avec une case aléatoire
     global SNAKE
-    SNAKE = [case_aleatoire()]
+    SNAKE = [randomTuple()]
     # le fruit initial
     global FRUIT
-    FRUIT = fruit_aleatoire()
+    FRUIT = randomFruitPos()
     # le mouvement initial, une paire d'entiers représentant les coordonées du déplacement, au départ on ne bouge pas
-    global MOUVEMENT
-    MOUVEMENT = (0, 0)
+    global MOVE
+    MOVE = (0, 0)
     # le score initial
     global SCORE
     SCORE = 0
     # la variable permettant de savoir si on a perdu, sera mise à 1 si on perd
-    global PERDU
-    PERDU = 0
-    global LargeurCase
-    global HauteurCase
+    global DEFEAT
+    DEFEAT = 0
+    global boxWidth
+    global boxHeight
     # On définit la longueur et la largeur du plateau
-    LargeurCase = (700 / int(CASENUMBER))
-    HauteurCase = (650 / int(CASENUMBER))
+    boxWidth = (700 / int(BOXCOUNT))
+    boxHeight = (650 / int(BOXCOUNT))
