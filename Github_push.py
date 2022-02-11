@@ -2,8 +2,6 @@ import base64
 from github import Github
 from github import InputGitTreeElement
 def Git_Push_Csv_File():
-    user = "eugenepascalyaro"
-    password = "Germaine18?."
     g = Github(login_or_token='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')
     repo = g.get_user().get_repo('HostCsvForSnake')  # repo name
     file_list = [
