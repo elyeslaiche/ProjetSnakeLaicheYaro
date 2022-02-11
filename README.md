@@ -69,9 +69,6 @@ d'avoir l'interface de jeu centrée pour jouer et une partie pour voir son score
 Afficher les évènements aux flèches directionnelles.
 Avoir une fenetre de fin avec l'affichage d'un tableau avec le score du joueur et sa position sur le classement des meilleurs scores.
 
-Github_push.py
-Ce fichier contient des fonctions qui vont nous permettre de sauvegarder les scores des différents joueurs et de pouvoir faire directement un push vers notre répertoire github.
-
 -----main.py
 C'est le fichier principal à exécuter pour tester le jeu.
 
