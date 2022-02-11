@@ -1,8 +1,10 @@
 import pandas as pd
-
-
-def readScore(csvPath, Table):
-    csv = pd.read_csv(csvPath, sep=",")
+import requests
+import io
+import Github_push
+def readScore(Table):
+    csv = pd.read_csv('CsvForSnake.csv', sep=",")
+    print(csv)
     csv.sort_values(csv.columns[1], ascending=False, inplace=True)
     csv.reset_index(inplace=True)
     csv.drop(columns="index", inplace=True)
@@ -13,17 +15,18 @@ def readScore(csvPath, Table):
 
 
 def addRow(csvPath, score, name):
-    csvoriginal = pd.read_csv(csvPath, sep=",")
+    url = "https://raw.githubusercontent.com/eugenepascalyaro/HostCsvForSnake/main/CsvForSnake.csv"
+    s = requests.get(url).content
+    csvoriginal = pd.read_csv(io.StringIO(s.decode('utf-8')), sep=",")
+    print(csvoriginal)
     if name == "":
         df = pd.DataFrame({str(csvoriginal.columns[0]): ["Unamed player"], str(csvoriginal.columns[1]): [score]})
     else:
         df = pd.DataFrame({str(csvoriginal.columns[0]): [name], str(csvoriginal.columns[1]): [score]})
 
     csv = pd.concat([csvoriginal, df])
+    print(csv)
     csv.sort_values(csv.columns[1], ascending=False, inplace=True)
+    csv.to_csv('CsvForSnake.csv', index=False)
+    Github_push.Git_Push_Csv_File()
 
-    csv.to_csv("testCsv.csv", index=False)
-
-
-def personalBestRead(csv, name):
-    return csv[csv[csv.columns[0]] == name].iloc[0].Score

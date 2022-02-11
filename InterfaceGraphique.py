@@ -139,7 +139,7 @@ def LastWindow(fenetre):
     # Configuration des nom de colonnes
     Table.heading("Name", text="Name", anchor=tk.CENTER)
     Table.heading("Score", text="Score", anchor=tk.CENTER)
-    readScore('testCsv.csv', Table)
+    readScore(Table)
     # Affichage du tableau et du Frame qui contient le tableau
 
     buttonQuit.pack(side=tk.BOTTOM)

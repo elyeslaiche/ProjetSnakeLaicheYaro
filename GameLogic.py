@@ -134,6 +134,7 @@ def mise_a_jour_snake(Barre):
 # met à jour le score
 def mise_a_jour_score(Barre):
     global SCORE
+    global SCORE
     SCORE = SCORE + 1
     Barre.config(state=tk.NORMAL)
     Barre.delete(0.0, 3.0)
@@ -211,7 +212,7 @@ def tache(fenetre, Plateau, Barre, CASENUMBER, NAME):
 
     # si on a perdu
     if PERDU:
-        CsvFunctions.addRow('testCsv.csv', int(SCORE), str(NAME))
+        CsvFunctions.addRow('CsvForSnake.csv', int(SCORE), str(NAME))
         InterfaceGraphique.LastWindow(fenetre)
     # sinon
     else:
