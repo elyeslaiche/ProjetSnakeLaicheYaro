@@ -21,7 +21,7 @@ def init():
     # Centre la fenetre
     fenetre.geometry("+{}+{}".format(positionRight, positionDown))
 
-    # déclaration du plateau de jeu
+    # declaration du plateau de jeu
     Canvas = tk.Canvas(fenetre, width=700, height=650, bg="black")
     Canvas.pack(side="bottom", fill=tk.NONE)
 
@@ -57,7 +57,6 @@ def init():
 
 
 def initConfigWindow():
-
     # declaration de la fenetre de configuration du jeu
     fenetreConfig = tk.Tk()
     fenetreConfig.geometry("500x500")
@@ -101,6 +100,7 @@ def initConfigWindow():
 
     return fenetreConfig
 
+
 def LastWindow(fenetre):
     fenetre.destroy()
     fenetreLast = tk.Tk()
@@ -117,9 +117,9 @@ def LastWindow(fenetre):
 
     # Affichage des boutons sur la fenetre
 
-
     # On crée un Canvas pour le score
-    Bar = tk.Label(fenetreLast, text="\nvous avez perdu avec un score de: " + str(GameLogic.SCORE), fg='Black', bg='grey')
+    Bar = tk.Label(fenetreLast, text="\nvous avez perdu avec un score de: " + str(GameLogic.SCORE), fg='Black',
+                   bg='grey')
 
     # Utilisation de ttk pour pouvoir insérer le tableau des scores dans la fenetre
     style = ttk.Style(fenetreLast)
@@ -149,8 +149,6 @@ def LastWindow(fenetre):
     Bar.pack()
 
 
-
-
 def startGame(fenetre, TextboxName, TextboxCase):
     # Définition d'une variable globale qui contiendra le nom du joueur
     global NAME
@@ -167,6 +165,7 @@ def startGame(fenetre, TextboxName, TextboxCase):
 
     fenetreGame.mainloop()
 
+
 def reInitPrgm():
     python = sys.executable
-    os.execl(python, python, * sys.argv)
+    os.execl(python, python, *sys.argv)
