@@ -198,7 +198,7 @@ def reinitialiser_jeu():
 def tache(fenetre, Plateau, Barre, CASENUMBER, NAME):
     global NombreCase
     NombreCase = CASENUMBER
-    NAME = str(NAME).rstrip('\n')
+    NAME = str(NAME).rstrip('\n').rstrip('\t')
     fenetre.update
     fenetre.update_idletasks()
     # on met à jour le snake
@@ -212,7 +212,7 @@ def tache(fenetre, Plateau, Barre, CASENUMBER, NAME):
 
     # si on a perdu
     if PERDU:
-        CsvFunctions.addRow('CsvForSnake.csv', int(SCORE), str(NAME))
+        CsvFunctions.addRow(int(SCORE), str(NAME))
         InterfaceGraphique.LastWindow(fenetre)
     # sinon
     else:
@@ -225,7 +225,7 @@ def tache(fenetre, Plateau, Barre, CASENUMBER, NAME):
 def InitGame(NombreCase):
     global CASENUMBER
     CASENUMBER = NombreCase
-    if CASENUMBER.rstrip('\n') == "" or int(CASENUMBER.rstrip('\n')) < 25 or int(CASENUMBER.rstrip('\n'))>200:
+    if not CASENUMBER.rstrip('\n').isdigit() or (CASENUMBER.rstrip('\n') == "" or int(CASENUMBER.rstrip('\n')) < 25 or int(CASENUMBER.rstrip('\n'))>200):
         CASENUMBER = 50
     # le snake initial: une liste avec une case aléatoire
     global SNAKE

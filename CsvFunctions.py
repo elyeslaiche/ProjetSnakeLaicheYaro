@@ -1,7 +1,5 @@
 import pandas as pd
 import requests
-import io
-import Github_push
 def readScore(Table):
     csv = pd.read_csv('CsvForSnake.csv', sep=",")
     print(csv)
@@ -14,10 +12,8 @@ def readScore(Table):
        Table.insert(parent='', index='end', values=(Score[0], Score[1]))
 
 
-def addRow(csvPath, score, name):
-    url = "https://raw.githubusercontent.com/eugenepascalyaro/HostCsvForSnake/main/CsvForSnake.csv"
-    s = requests.get(url).content
-    csvoriginal = pd.read_csv(io.StringIO(s.decode('utf-8')), sep=",")
+def addRow(score, name):
+    csvoriginal = pd.read_csv('CsvForSnake.csv', sep=",")
     if name == "":
         df = pd.DataFrame({str(csvoriginal.columns[0]): ["Unamed player"], str(csvoriginal.columns[1]): [score]})
     else:
@@ -26,5 +22,4 @@ def addRow(csvPath, score, name):
     csv = pd.concat([csvoriginal, df])
     csv.sort_values(csv.columns[1], ascending=False, inplace=True)
     csv.to_csv('CsvForSnake.csv', index=False)
-    Github_push.Git_Push_Csv_File()
 
