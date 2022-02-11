@@ -25,7 +25,7 @@ def init():
     Canvas = tk.Canvas(fenetre, width=700, height=650, bg="black")
     Canvas.pack(side="bottom", fill=tk.NONE)
 
-    # Déclaration du bouton recommencer la partie
+    # Declaration du bouton recommencer la partie
     button = tk.Button(fenetre, text='Recommencer la partie ', command=reinitialiser_jeu, fg='black',
                        bg='#ffffff', activebackground='red', padx=15)
 
