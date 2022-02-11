@@ -134,7 +134,6 @@ def mise_a_jour_snake(Barre):
 # met à jour le score
 def mise_a_jour_score(Barre):
     global SCORE
-    print()
     SCORE = SCORE + 1
     Barre.config(state=tk.NORMAL)
     Barre.delete(0.0, 3.0)

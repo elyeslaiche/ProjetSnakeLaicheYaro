@@ -7,8 +7,7 @@ def readScore(csvPath, Table):
     csv.reset_index(inplace=True)
     csv.drop(columns="index", inplace=True)
     df = pd.DataFrame(csv)
-    ListOfScores = df.values.tolist()
-    print(len(ListOfScores))
+    ListOfScores = df.head(10).values.tolist()
     for Score in ListOfScores:
        Table.insert(parent='', index='end', values=(Score[0], Score[1]))
 
