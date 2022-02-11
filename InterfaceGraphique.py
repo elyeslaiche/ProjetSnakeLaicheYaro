@@ -1,8 +1,10 @@
 # Interface graphique
+import os
+import sys
 import tkinter as tk
 from tkinter import ttk
-
 import GameLogic
+from CsvFunctions import readScore
 from GameLogic import reinitialiser_jeu, tache, left_key, right_key, up_key, down_key, case_aleatoire, fruit_aleatoire
 
 
@@ -39,9 +41,8 @@ def init():
     Bar.config(state=tk.DISABLED)
 
     # Affichage des elements declarés sur la fenetre*
-
-    Bar.pack()
     button.pack()
+    Bar.pack()
 
     # Affecter les events aux fleches directionnelles
     fenetre.bind("<Left>", left_key)
@@ -56,6 +57,7 @@ def init():
 
 
 def initConfigWindow():
+
     # declaration de la fenetre de configuration du jeu
     fenetreConfig = tk.Tk()
     fenetreConfig.geometry("500x500")
@@ -79,12 +81,12 @@ def initConfigWindow():
     caseNumberEntered = tk.Text(fenetreConfig, height=1, width=25, bg='white')
 
     # Affichage du champ texte centré horizontalement
-    name.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-    nameEntered.place(relx=0.5, rely=0.55, anchor=tk.CENTER)
+    name.place(relx=0.5, rely=0.3, anchor=tk.CENTER)
+    nameEntered.place(relx=0.5, rely=0.35, anchor=tk.CENTER)
 
     # Affichage du champ texte centré horizontalement
-    caseNumber.place(relx=0.5, rely=0.6, anchor=tk.CENTER)
-    caseNumberEntered.place(relx=0.5, rely=0.65, anchor=tk.CENTER)
+    caseNumber.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
+    caseNumberEntered.place(relx=0.5, rely=0.45, anchor=tk.CENTER)
 
     # Déclaration des boutons pour commencer le jeu et quitter le jeu
     buttonStart = tk.Button(fenetreConfig, text='start', fg='green', bg='darkgrey', activebackground='green',
@@ -97,40 +99,56 @@ def initConfigWindow():
     buttonStart.place(relx=0.5, rely=0.85, anchor=tk.CENTER)
     buttonQuit.place(relx=0.5, rely=0.95, anchor=tk.CENTER)
 
-    # Utilisation de ttk pour pouvoir insérer le tableau des scores dans la fenetre
-    style = ttk.Style(fenetreConfig)
-    style.theme_use("clam")
-    style.configure("Treeview", background="black",
-                    fieldbackground="black", foreground="white")
+    return fenetreConfig
 
-    configFrame = tk.Frame(fenetreConfig)
+def LastWindow(fenetre):
+    fenetre.destroy()
+    fenetreLast = tk.Tk()
+    fenetreLast.geometry("500x500")
+    fenetreLast.config(bg='grey')
+    fenetreLast.title("Snake End")
+    fenetreLast.resizable(False, False)
+
+    buttonStart = tk.Button(fenetreLast, text='Restart', fg='green', bg='darkgrey', activebackground='green',
+                            activeforeground='white',
+                            command=reInitPrgm)
+    buttonQuit = tk.Button(fenetreLast, text='quit', fg='red', bg='darkgrey', activebackground='red',
+                           activeforeground='white', command=fenetreLast.destroy)
+
+    # Affichage des boutons sur la fenetre
+
+
+    # On crée un Canvas pour le score
+    Bar = tk.Label(fenetreLast, text="\nvous avez perdu avec un score de: " + str(GameLogic.SCORE), fg='Black', bg='grey')
+
+    # Utilisation de ttk pour pouvoir insérer le tableau des scores dans la fenetre
+    style = ttk.Style(fenetreLast)
+    style.theme_use("clam")
+    style.configure("Treeview", background="grey",
+                    fieldbackground="grey", foreground="grey")
+
+    configFrame = tk.Frame(fenetreLast)
     Table = ttk.Treeview(configFrame)
 
     # Attribution des colonnes
-    Table['columns'] = ('player_name', 'player_Rank', 'player_states')
-    Table.column("#0", width=0, stretch=tk.NO)
-    Table.column("player_name", anchor=tk.CENTER, width=100)
-    Table.column("player_Rank", anchor=tk.CENTER, width=100)
-    Table.column("player_states", anchor=tk.CENTER, width=100)
+    Table['columns'] = ('Name', 'Score')
+    Table['show'] = 'headings'
+    Table.column("Name", anchor=tk.CENTER, width=100)
+    Table.column("Score", anchor=tk.CENTER, width=100)
 
     # Configuration des nom de colonnes
-    Table.heading("#0", text="", anchor=tk.CENTER)
-    Table.heading("player_name", text="Name", anchor=tk.CENTER)
-    Table.heading("player_Rank", text="Rank", anchor=tk.CENTER)
-    Table.heading("player_states", text="States", anchor=tk.CENTER)
-
-    Table.insert(parent='', index='end', iid=0, text='',
-                 values=('1', 'Ninja', '101', 'Oklahoma', 'Moore'))
-
+    Table.heading("Name", text="Name", anchor=tk.CENTER)
+    Table.heading("Score", text="Score", anchor=tk.CENTER)
+    readScore('testCsv.csv', Table)
     # Affichage du tableau et du Frame qui contient le tableau
+
+    buttonQuit.pack(side=tk.BOTTOM)
+    buttonStart.pack(side=tk.BOTTOM)
     configFrame.pack()
     Table.pack()
+    Bar.pack()
 
-    return fenetreConfig
 
-
-def LastWindow():
-    return 0
 
 
 def startGame(fenetre, TextboxName, TextboxCase):
@@ -149,5 +167,6 @@ def startGame(fenetre, TextboxName, TextboxCase):
 
     fenetreGame.mainloop()
 
-#def GetCaseNumber():
-  # return CASENUMBER
+def reInitPrgm():
+    python = sys.executable
+    os.execl(python, python, * sys.argv)

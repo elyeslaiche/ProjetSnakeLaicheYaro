@@ -1,12 +1,16 @@
 import pandas as pd
 
 
-def readScore(csvPath):
+def readScore(csvPath, Table):
     csv = pd.read_csv(csvPath, sep=",")
     csv.sort_values(csv.columns[1], ascending=False, inplace=True)
     csv.reset_index(inplace=True)
     csv.drop(columns="index", inplace=True)
-    return csv
+    df = pd.DataFrame(csv)
+    ListOfScores = df.values.tolist()
+    print(len(ListOfScores))
+    for Score in ListOfScores:
+       Table.insert(parent='', index='end', values=(Score[0], Score[1]))
 
 
 def addRow(csvPath, score, name):

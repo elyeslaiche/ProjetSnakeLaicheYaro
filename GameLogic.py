@@ -1,6 +1,7 @@
 # Import des différents fichiers pour accès aux méthodes
+import collections
 import tkinter as tk
-
+import InterfaceGraphique
 import CsvFunctions
 # Initialisation des variables globales
 # pour l'aléatoire
@@ -24,8 +25,8 @@ def CaseDraw(x, y, Canvas):
 
 def case_aleatoire():
     # on met à jour l'affichage et les événements du clavier
-    AleatoireX = randint(1, int(CASENUMBER) - 2)
-    AleatoireY = randint(1, int(CASENUMBER) - 2)
+    AleatoireX = randint(0, int(CASENUMBER) - 1)
+    AleatoireY = randint(0, int(CASENUMBER) - 1)
 
     return AleatoireX, AleatoireY
 
@@ -66,6 +67,8 @@ def fruit_aleatoire():
 # On dessine le fruit, idem que pour colorier une case, mais on utilise create_oval à la place
 def dessine_fruit(Plateau):
     global FRUIT
+    if not isinstance(FRUIT, collections.abc.Sequence):
+        FRUIT= case_aleatoire()
     x, y = FRUIT
 
     OrigineCaseX1 = x * LargeurCase
@@ -112,15 +115,15 @@ def mise_a_jour_snake(Barre):
     else:
         # on enlève le dernier élément du serpent (c'est-à-dire: on ne grandit pas)
         SNAKE.pop()
-        if NouvelleTete[0] >= int(CASENUMBER)-1 and LASTMOVE == 'right_key':
-            NouvelleTete = (1, NouvelleTete[1])
-        elif NouvelleTete[0] <= 1 and LASTMOVE == 'left_key':
-            NouvelleTete = (int(CASENUMBER)-1, NouvelleTete[1])
+        if NouvelleTete[0] >= int(CASENUMBER) and LASTMOVE == 'right_key':
+            NouvelleTete = (0, NouvelleTete[1])
+        elif NouvelleTete[0] < 0 and LASTMOVE == 'left_key':
+            NouvelleTete = (int(CASENUMBER), NouvelleTete[1])
 
-        if NouvelleTete[1] >= int(CASENUMBER)-1 and LASTMOVE == 'down_key':
-            NouvelleTete = (NouvelleTete[0], 1)
-        elif NouvelleTete[1] <= 1 and LASTMOVE == 'up_key':
-            NouvelleTete = (NouvelleTete[0], int(CASENUMBER)-1)
+        if NouvelleTete[1] >= int(CASENUMBER) and LASTMOVE == 'down_key':
+            NouvelleTete = (NouvelleTete[0], 0)
+        elif NouvelleTete[1] < 0 and LASTMOVE == 'up_key':
+            NouvelleTete = (NouvelleTete[0], int(CASENUMBER))
 
     # on vérifie si on a perdu
     serpent_mort(NouvelleTete)
@@ -209,18 +212,8 @@ def tache(fenetre, Plateau, Barre, CASENUMBER, NAME):
 
     # si on a perdu
     if PERDU:
-        # on efface la barre des scores
-        Barre.config(state=tk.NORMAL)
-        Barre.delete(0.0, 3.0)
-        # on affiche perdu
-        Barre.insert('1.0', "Vous avez perdu avec un score de " + str(SCORE))
-        Barre.tag_add("tag_name", "1.0", "end")
-        Barre.config(state=tk.DISABLED)
-        # on prépare la nouvelle partie
         CsvFunctions.addRow('testCsv.csv', int(SCORE), str(NAME))
-        reinitialiser_jeu()
-        # on rappelle la fonction principale
-        fenetre.after(70, lambda: tache(fenetre, Plateau, Barre, CASENUMBER, NAME))
+        InterfaceGraphique.LastWindow(fenetre)
     # sinon
     else:
         # on rappelle la fonction principale
@@ -232,7 +225,7 @@ def tache(fenetre, Plateau, Barre, CASENUMBER, NAME):
 def InitGame(NombreCase):
     global CASENUMBER
     CASENUMBER = NombreCase
-    if CASENUMBER.rstrip('\n') == "" or int(CASENUMBER.rstrip('\n')) < 10 or int(CASENUMBER.rstrip('\n'))>200:
+    if CASENUMBER.rstrip('\n') == "" or int(CASENUMBER.rstrip('\n')) < 25 or int(CASENUMBER.rstrip('\n'))>200:
         CASENUMBER = 50
     # le snake initial: une liste avec une case aléatoire
     global SNAKE
