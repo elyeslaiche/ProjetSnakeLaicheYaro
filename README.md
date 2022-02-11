@@ -34,6 +34,9 @@ Si on perd et que la partie se termine le score est stocké dans un fichier csv 
 ----------------------------------------------------------------------------
 Exécution du code via le fichier principal main.py
 commande :
+
+$pip3 install -r requirements.txt
+
 $ python3 main.py
 
 5°) Aide
